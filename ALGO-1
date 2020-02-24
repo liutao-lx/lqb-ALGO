@@ -1,0 +1,27 @@
+#include<iostream>
+using namespace std;
+#include<algorithm>
+bool cmp(int a,int b)
+{
+	return a>b;
+}
+int f[1005],t[1005]; 
+int main(){
+	int n;
+	cin>>n; 
+	for(int i=1;i<=n;i++){
+		cin>>f[i];
+	}
+	int m;
+	cin>>m;
+	for(int i=1;i<=m;i++){
+		for(int i=1;i<=n;i++){
+			t[i]=f[i];
+		}
+		int a,b,c;
+		cin>>a>>b>>c;
+		sort(t+a,t+b+1,cmp);
+		cout<<t[a+c-1]<<endl;
+	}
+	return 0;
+} 
