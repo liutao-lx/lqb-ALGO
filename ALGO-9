@@ -1,0 +1,20 @@
+#include<iostream>
+using namespace std;
+#include<algorithm>
+int main(){
+	int a[30][30];
+	int sum=0,k;
+	cin>>k;
+	for(int i=2;i<=k;i++){//动态规划，画表出来找规律
+		a[i][i]=2;
+		a[i][2]=i*(i-1);
+		for(int j=3;j<i;j++){
+			a[i][j]=a[i-1][j]+a[i-1][j-1];
+		}
+	}
+	for(int i=2;i<=k;i++){
+		sum+=a[k][i];
+	}
+	cout<<sum;
+	return 0;
+}
