@@ -1,0 +1,37 @@
+#include<iostream>
+using namespace std;
+#include<algorithm>
+#include<vector>
+vector<int> v[100005];
+//用dp[i][0]表示不选择i点时，i点及其子树能选出的最大权值，
+//dp[i][1]表示选择i点时，i点及其子树的最大权值。
+int dp[100005][2];
+int vis[100005];
+void dfs(int s){
+	vis[s]=1;
+	for(int i=0;i<v[s].size();i++){
+		int p=v[s][i];
+		if(vis[p]){
+			continue;
+		}
+		dfs(p);
+		dp[s][1]+=dp[p][0];
+		dp[s][0]+=max(dp[p][0],dp[p][1]);
+	}
+}
+int main(){
+	int n;
+	cin>>n;
+	for(int i=1;i<=n;i++){
+		cin>>dp[i][1];
+	}
+	for(int i=0;i<n-1;i++){
+		int a,b;
+		cin>>a>>b;
+		v[a].push_back(b);
+		v[b].push_back(a);
+	}
+	dfs(1);
+	cout<<max(dp[1][0],dp[1][1]);
+	return 0;
+}
