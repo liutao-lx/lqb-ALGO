@@ -1,0 +1,30 @@
+#include<iostream>
+using namespace std;
+#include<algorithm>
+int dp[1000][1000]={0};
+//dp[i][j]中i为第i位(从右向左)，j为第i位可能的取值。
+//则dp[i][j]表示的是第i位为j时是好数的个数 
+int main(){
+	int k,l;//k进制l位
+	cin>>k>>l;
+	int sum=0;
+	for(int i=0;i<k;i++){
+		dp[1][i]=1; 
+	} 
+	for(int i=2;i<=l;i++){
+		for(int j=0;j<k;j++){
+			for(int x=0;x<k;x++){
+				if(x!=j-1&&x!=j+1){
+					dp[i][j]+=dp[i-1][x];
+					dp[i][j]%=1000000007;
+				}
+			}
+		}
+	}
+	for(int j=1;j<k;j++){
+		sum+=dp[l][j];
+		sum%=1000000007;
+	}
+	cout<<sum<<endl;
+	return 0;
+}
