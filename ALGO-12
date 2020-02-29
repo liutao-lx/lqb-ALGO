@@ -1,0 +1,40 @@
+#include<iostream>
+using namespace std;
+#include<algorithm>
+void exp(int m,int p){//m表示数，p表示幂 
+	if(m==1){
+		if(p==0){
+			cout<<"2(0)";
+		}else if(p==1){
+			cout<<"2";
+		}else if(p==2){
+			cout<<"2(2)";
+		}else{
+			cout<<"2(";
+			exp(p,0);
+			cout<<")";
+		}
+	}else{
+		exp(m>>1,p+1);
+		if(m%2==1){
+			if(p==0){
+				cout<<"+2(0)";
+			}else if(p==1){
+				cout<<"+2";
+			}else if(p==2){
+				cout<<"+2(2)";
+			}else{
+				cout<<"+2(";
+				exp(p,0);
+				cout<<")";
+			}
+		}
+	}
+}
+int main(){
+	 int n;
+	 cin>>n ;
+	 exp(n,0);
+	return 0;
+}
+
