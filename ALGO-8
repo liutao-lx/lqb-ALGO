@@ -1,0 +1,101 @@
+#include<iostream>
+using namespace std;
+#include<algorithm>
+class tree{
+	public:
+	int l,r;
+	int sum,max;
+}; //线段树
+int cmp(int a,int b){
+	return a>b?a:b;
+}
+tree t[400010];
+void Build(int i,int l,int r){
+	t[i].l=l;
+	t[i].r=r;
+	t[i].sum=0;
+	t[i].max=0;
+	if(l==r){
+		return ;
+	}
+	int mid=(l+r)/2;
+	Build(i*2,l,mid);
+	Build(i*2+1,mid+1,r);
+}
+void Insert(int i,int v,int value){
+	t[i].sum+=value;
+	if(t[i].max<value){
+		t[i].max=value;
+	}
+	if(t[i].l==t[i].r){
+		return ;
+	}
+	if(v<=(t[i].l+t[i].r)/2){
+		Insert(i*2,v,value);
+	}else{
+		Insert(i*2+1,v,value);
+	}
+}
+void Change(int i,int v,int num){
+	if(v==t[i].l&&v==t[i].r){
+		t[i].sum=num;
+		t[i].max=num;
+		return ;
+	}
+	int mid=(t[i].l+t[i].r)>>1;
+	if(v<=mid){
+		Change(i*2,v,num);
+	}else{
+		Change(i*2+1,v,num);
+	}
+	t[i].sum=t[i*2].sum+t[i*2+1].sum;
+	t[i].max=cmp(t[i*2].max,t[i*2+1].max);
+}
+int Qsum(int i,int l,int r){
+	if(l==t[i].l&&r==t[i].r){
+		return t[i].sum;
+	}
+	int mid=(t[i].l+t[i].r)>>1;
+	if(r<=mid){
+		return Qsum(i*2,l,r);
+	}else if(l>mid){
+		return Qsum(i*2+1,l,r);
+	}else{
+		return Qsum(i*2,l,mid)+Qsum(i*2+1,mid+1,r); 
+	}
+}
+int Qmax(int i,int l,int r){
+	if(l==t[i].l&&r==t[i].r){
+		return t[i].max;
+	}
+	int mid=(t[i].l+t[i].r)>>1;
+	if(r<=mid){
+		return Qmax(i*2,l,r);
+	}else if(l>mid){
+		return Qmax(i*2+1,l,r);
+	}else {
+		return cmp(Qmax(i*2,l,mid),Qmax(i*2+1,mid+1,r));
+	}
+}
+int main()
+{	
+	int n,m;
+	cin>>n>>m;
+	Build(1,1,n);
+	for(int i=1;i<=n;i++){
+		int value;
+		cin>>value;
+		Insert(1,i,value); 
+	}
+	while(m--){
+		int p,x,y;
+		cin>>p>>x>>y;
+		switch(p){
+			case 1:Change(1,x,y);break;
+			case 2:cout<<Qsum(1,x,y)<<endl;break;
+			case 3:cout<<Qmax(1,x,y)<<endl;break;
+		} 
+	}
+	return 0;
+}
+
