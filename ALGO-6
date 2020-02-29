@@ -1,0 +1,74 @@
+#include<iostream>
+using namespace std;
+#include<algorithm>
+#include<vector>
+#include<string.h>
+#include<queue>
+#define inf 0x3f3f3f3f
+#define N 10010
+int C[N];
+struct node{
+	int v;
+	int time;
+	node(){
+	}
+	node(int vv,int tt){
+		v=vv;
+		time=tt;
+	}
+};
+vector<node> v[N]; 
+int n,p;
+int vis[N]={0},dis[N];
+//int pre[N];
+int prim(){
+	memset(vis,0,sizeof(vis));
+	memset(dis,inf,sizeof(dis));
+	vis[1]=1;
+	dis[1]=0;
+	int pos=1,mst=0;
+	for(int i=1;i<n;i++){
+		for(int j=0;j<v[pos].size();j++){
+			int t=v[pos][j].time;
+			int vv=v[pos][j].v;
+			if(!vis[vv]&&dis[vv]>t){
+//				pre[vv]=pos;
+				dis[vv]=t;
+			}
+		}
+		int mini=inf,mind=inf;
+		for(int j=1;j<=n;j++){
+			if(!vis[j]&&dis[j]<mind){
+				mind=dis[j];
+				mini=j;
+			}
+		}
+		pos=mini;
+		vis[mini]=1;
+	}
+	for(int i=1;i<=n;i++){
+		mst+=dis[i];
+	} 
+	return mst;
+}
+int main(){
+	cin>>n>>p;
+	int min=inf;
+	for(int i=1;i<=n;i++){
+		cin>>C[i];
+		if(min>C[i]){
+			min=C[i];
+		}
+	}
+	for(int i=1;i<=p;i++){
+		int a,b,c;
+		cin>>a>>b>>c;
+		c=2*c+C[a]+C[b];
+		v[a].push_back(node(b,c));
+		v[b].push_back(node(a,c));
+	}
+	int ans=prim();
+	cout<<ans+min;
+	return 0;
+}
+
