@@ -1,0 +1,46 @@
+#include<iostream>
+using namespace std;
+#include<algorithm> 
+//1）首先考虑如果加满油都不能到达下一个加油站，则肯定无法到达目的地，则输出"No Solution"
+//2）寻找下一个比当前加油站便宜的加油站，如果能找到比当前加油站便宜的加油站，且一次加油即可到达，
+//则把油加到刚好能到达该加油站即可，否则把油加到最满，行驶到最大距离之前的加油站，然后再加油到该便宜的加油站；
+//如果不能到达，则把油加满，行驶到最大距离之前的加油站
+int main(){
+	double D1,C,D2,P;int N;
+	cin>>D1>>C>>D2>>P>>N;
+	double dis[1005];
+	double price[1005];
+	double cost=0,remain=0;//费用，剩余油量 
+	dis[0]=0;//起点加油站 
+	price[0]=P;
+	dis[N+1]=D1;//最后终点 
+	price[N+1]=0;
+	for(int i=1;i<=N;i++){
+		cin>>dis[i]>>price[i];
+		if(dis[i]-dis[i-1]>C*D2){//如果加满油还到不了加油站 
+			cout<<"No Solution";
+			return 0;
+		}
+	}	
+	for(int i=0,j;i<=N;i=j){
+		for(j=i+1;j<=N+1;j++){//从当前加油站的下一个找比i更便宜的加油站 
+			if(dis[j]-dis[i]>C*D2){
+				j--;//如果不能行驶到最大距离之前的加油站
+				break; 
+			}
+			if(price[j]<=price[i]){//找到比当前加油站便宜的加油站 
+				break;
+			} 
+		}
+		if(price[j]<=price[i]){//找到比当前加油站便宜的加油站 
+			cost+=((dis[j]-dis[i])/D2-remain)*price[i];//加到刚刚好到达j点 
+			remain=0;
+		} else{//不能一次到达或找不到 
+			cost+=(C-remain)*price[i];//加满
+			remain=C-(dis[j]-dis[i]) /D2;//剩余油量 
+		} 
+		
+	} 
+	printf("%.2lf",cost);
+	return 0;  
+}
