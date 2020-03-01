@@ -1,0 +1,15 @@
+#include<iostream>
+using namespace std;
+#include<algorithm> 
+
+int main(){
+	int n;
+	cin>>n;
+	int number_1=n%100%10,number_10=n/10%10,number_100=n/100;
+	if(number_1*number_1*number_1+number_10*number_10*number_10+number_100*number_100*number_100==n){
+		cout<<"YES";
+	}else{
+		cout<<"NO";
+	}
+	return 0;  
+}
