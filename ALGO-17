@@ -1,0 +1,36 @@
+#include<iostream>
+using namespace std;
+#include<algorithm> 
+#include<string.h>
+#define ll long long
+char num[50];
+ll remainNum(int s,int t){
+	ll sum=0;
+	for(int i=s;i<=t;i++){
+		sum*=10;
+		sum+=num[i]-'0';
+	}
+	return sum;
+}
+int main(){
+	int n,k;
+	cin>>n>>k;
+	ll dp[50][10];//dp[i][j]表示长度为i+1的字符串填入j个乘号所得的最大值。
+	memset(dp,0,sizeof(dp));
+	getchar();
+	for(int i=0;i<n;i++){
+		cin>>num[i];
+		dp[i][0]=remainNum(0,i);
+	}
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=k;j++){
+			for(int u=0;u<i;u++){
+			//长度为i的字符串填入j个乘号所得值等于长度为u的字符串（u小于i）
+			//填入j-1个乘号所得值乘以u+1到i的字符串代表的数 
+				dp[i][j]=max(dp[i][j],dp[u][j-1]*remainNum(u+1,i));
+			}
+		}
+	}
+	cout<<dp[n-1][k];
+	return 0;  
+}
