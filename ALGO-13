@@ -1,0 +1,38 @@
+#include<iostream>
+using namespace std;
+#include<algorithm> 
+#include<vector>
+int cmp(int a,int b){
+	return a>b;
+} 
+int main(){
+	int tmp;
+	vector<int> hight,dpMAX,dpMIN;
+	dpMAX.push_back(0);
+	dpMIN.push_back(30010);
+	while(cin>>tmp){
+		hight.push_back(tmp);
+	}
+	vector<int>::iterator it=hight.begin();
+	while(it!=hight.end()){
+		if(*it<=dpMAX[dpMAX.size()-1]){//如果可以接在dpMAX后面 
+			dpMAX.push_back(*it);
+		}else{//否则找一个最该替换的 
+		//找最长非递减序列 
+			int k=upper_bound(dpMAX.begin(),dpMAX.end(),*it,cmp)-dpMAX.begin();
+			dpMAX[k]=*it;
+		}
+		
+		if(*it>dpMIN[dpMIN.size()-1]){
+			dpMIN.push_back(*it);
+		}else{
+			//找最长非递增序列 
+			int k=upper_bound(dpMIN.begin(),dpMIN.end(),*it)-dpMIN.begin();
+			if(k!=dpMIN.size())
+			dpMIN[k]=*it;
+		}
+		it++;
+	} 
+	cout<<dpMAX.size()<<endl<<dpMIN.size();
+	return 0;
+}
