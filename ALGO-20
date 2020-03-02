@@ -1,0 +1,35 @@
+#include<iostream>
+using namespace std;
+#include<algorithm>
+struct node{
+	char data;
+	node *l,*r; 
+};
+string last,mid;
+node* createTree(int lastL,int lastR,int midL,int midR){//分别表示后序左子树 右子树 中序左子树 右子树 
+	if(lastL>lastR)return NULL;//如果左边大于右边结束 
+	node* root=new node;
+	root->data=last[lastR];
+	int k;
+	for(k=midL;k<=midR;k++){//找到后序遍历的当前的点在中序的位置 
+		if(mid[k]==last[lastR]){
+			break;
+		}
+	}
+	int numleft=k-midL;
+	root->l=createTree(lastL,lastL+numleft-1,midL,k-1);
+	root->r=createTree(lastL+numleft,lastR-1,k+1,midR);
+}
+void printFirst( node* root){//前序遍历 
+	if(root){
+		cout<<root->data;
+		printFirst(root->l);
+		printFirst(root->r);
+	}
+}
+int main(){
+	cin>>mid>>last;
+	node* root=createTree(0,last.length()-1,0,mid.length()-1);
+	printFirst(root);
+    return 0;
+}
