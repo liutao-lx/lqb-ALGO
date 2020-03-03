@@ -1,0 +1,17 @@
+#include<iostream>
+using namespace std;
+#include<algorithm>
+int dp[20000];//体积为n能装下多少空间 
+int main(){
+	int v,n;
+	cin>>v>>n;
+	for(int i=1;i<=n;i++){//，枚举每一个物品进不进背包， 
+		int w;
+		cin>>w;
+		for(int j=v;j>=w;j--){//枚举每个容量，进背包或不进的结果 
+			dp[j]=max(dp[j],dp[j-w]+w);
+		}
+	}
+	cout<<v-dp[v];
+	return 0; 
+}
