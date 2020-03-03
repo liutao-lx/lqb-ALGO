@@ -1,0 +1,14 @@
+#include<iostream>
+using namespace std;
+#include<algorithm>
+#include<math.h>
+int main(){
+	double a,b,c,d;
+	cin>>a>>b>>c>>d;
+	 for(double x=-100;x<=100;x+=0.01){
+	 	if(fabs(x*x*x*a+x*x*b+x*c+d)<=0.000001){
+	 		printf("%.2lf ",x);
+		 }
+	 }
+	return 0; 
+}
