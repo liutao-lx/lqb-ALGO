@@ -1,0 +1,36 @@
+#include<iostream>
+using namespace std;
+#include<string.h>
+#include<math.h>
+#include<queue>
+int n;
+string S; 
+struct node{
+	char data;
+	node *r,*l;
+};
+node* createTree(string s){
+	node* root=new node;
+	if(s.length()<1)return root;
+	if(s.find('0')!=string::npos&&s.find('1')!=string::npos){
+		root->data='F';
+//		cout<<root->data;
+	}else if(s.find('0')!=string::npos&&s.find('1')==string::npos){
+		root->data='B';
+//		cout<<root->data;
+	}else{
+		root->data='I';
+//		cout<<root->data;
+	}
+	root->l=createTree(s.substr(0,s.size()/2));
+	root->r=createTree(s.substr(s.size()/2,s.size()/2)); 
+	cout<<root->data; 
+}
+int main(){
+	cin>>n;
+	cin>>S;
+	node* root=createTree(S);
+	return 0;
+}
+
+
