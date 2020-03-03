@@ -1,0 +1,88 @@
+#include<iostream>
+using namespace std;
+#include<math.h>
+#include<vector> 
+#include<string.h>
+#define inf 0x3f3f3f3f
+double disCost[500][500]; 
+int s,t,A,B;
+struct node{
+	int x, y;
+	int id;
+};
+vector<node> v(1);
+int isPlumb(int x1,int y1,int x2,int y2,int x3,int y3){//向量垂直定理
+	return !((x1-x2)*(x1-x3)+(y1-y2)*(y1-y3)); 
+}
+double distance(int x1, int y1, int x2, int y2){
+	 return sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+}
+double djstl(int m){//迪杰斯特拉算法 
+	double dis[500];
+    bool book[500] = {0};
+    fill(dis, dis + 500, inf);
+    for (int i = 0; i < 500; i++) dis[i] = inf;
+    dis[m] = 0;
+    for (int i = 1; i <= s * 4 - 1; i++) {
+        int minn = inf, u = -1;
+        for (int j = 1; j <= s * 4; j++) {
+            if (book[j] == false && dis[j] < minn) {
+                minn = dis[j];
+                u = j;
+            }
+        }
+        if (u == -1) break;
+        book[u] = true;
+        for (int k = 1; k <= s * 4; k++) {
+            if (disCost[u][k] != inf && dis[k] > disCost[u][k] + dis[u]) {
+                dis[k] = disCost[u][k] + dis[u];
+            }
+        }
+    }
+    return min(min(dis[B * 4 - 3], dis[B * 4 - 2]), min(dis[B * 4 - 1], dis[B * 4]));
+}
+int main(){
+	memset(disCost,inf,sizeof(disCost));
+	cin>>s>>t>>A>>B;
+	for(int i=1;i<=s;i++){
+		int x1, y1, x2, y2, x3, y3, x4, y4, t1;
+		cin>>x1>>y1>>x2>>y2>>x3>>y3>>t1;
+		//确定第四个点 
+		if(isPlumb(x1,y1,x2,y2,x3,y3)){
+			x4=x2+x3-x1;
+			y4=y2+y3-y1;
+		}else if(isPlumb(x2,y2,x1,y1,x3,y3)){
+			x4=x1+x3-x2;
+			y4=y1+y3-y2;
+		}else{
+			x4=x1+x2-x3;
+			y4=y1+y2-y3;
+		}
+		int tmp=(i-1)*4;
+		disCost[tmp + 1][tmp + 2] = disCost[tmp + 2][tmp + 1] = distance(x1, y1, x2, y2) * t1;
+        disCost[tmp + 1][tmp + 3] = disCost[tmp + 3][tmp + 1] = distance(x1, y1, x3, y3) * t1;
+        disCost[tmp + 1][tmp + 4] = disCost[tmp + 4][tmp + 1] = distance(x1, y1, x4, y4) * t1;
+        disCost[tmp + 2][tmp + 3] = disCost[tmp + 3][tmp + 2] = distance(x2, y2, x3, y3) * t1;
+        disCost[tmp + 2][tmp + 4] = disCost[tmp + 4][tmp + 2] = distance(x2, y2, x4, y4) * t1;
+        disCost[tmp + 3][tmp + 4] = disCost[tmp + 4][tmp + 3] = distance(x3, x3, x4, y4) * t1;
+		v.push_back({x1, y1, i});
+        v.push_back({x2, y2, i});
+        v.push_back({x3, y3, i});
+        v.push_back({x4, y4, i});
+	}
+	for (int i = 1; i <= s * 4; i++) {
+        for (int j = i + 1; j <= s * 4; j++) {//求一个城市到另一个城市的航班费用 
+            if (v[i].id != v[j].id) {
+                disCost[i][j] = disCost[j][i] = t * distance(v[i].x, v[i].y, v[j].x, v[j].y);
+            }
+        }
+    }
+	double ans=inf;
+	for(int i=3;i>=0;i--){
+		ans=min(ans,djstl(A*4-i));
+	}
+	printf("%.1lf",ans);
+	return 0;
+}
+
+
