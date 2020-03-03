@@ -1,0 +1,41 @@
+#include<iostream>
+using namespace std;
+#include<string.h>
+#include<math.h>
+int a[510]={0},b[1010];
+int p;
+void recur(int x){//大数相乘 
+	if(x==0) return;
+    recur(x/2);
+    memset(b,0,sizeof(b));
+    for(int i=1;i<=500;i++)
+        for(int j=1;j<=500;j++){
+            if(x%2==0)
+                b[i+j-1]+=a[i]*a[j];
+            else b[i+j-1]+=a[i]*a[j]*2;
+        }
+    for(int i=1;i<=500;i++){
+        a[i]=b[i]%10;
+        b[i+1]+=b[i]/10;
+    }
+}
+void cut(){
+	a[1]--;int i=1;
+    while(a[i]<0) a[i+1]--,a[i]+=10,i++;
+}
+int main(){
+	cin>>p;
+	a[1]=1;
+	recur(p); 
+  	cut();
+  	cout<<int(log10(2)*p+1);
+	for(int i=500;i>0;i--){
+		if(i%50==0){
+			cout<<endl;
+		}
+		cout<<a[i];
+	}cout<<endl;
+	return 0;
+}
+
+
