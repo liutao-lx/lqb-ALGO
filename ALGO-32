@@ -1,0 +1,27 @@
+#include<iostream>
+using namespace std;
+#include<algorithm>
+int main(){
+	int s,t,w,i=5,i2=0;
+	cin>>s>>t>>w;
+	string c;
+	cin>>c;
+	while(i--){
+		c[w-1]++;
+		for(int q=w-1;;q--){
+			if(c[q]>t+96-i2){//判断是否大于该位置的最大值 
+				c[q-1]++;
+				if(q==0)return 0; 
+			}else{
+				for(int j=q+1;j<=w-1;j++){
+					c[j]=c[j-1]+1;
+				}
+				break;
+			}
+			i2++;
+		}
+		cout<<c<<endl;
+		i2=0;
+	}
+	return 0;
+}
