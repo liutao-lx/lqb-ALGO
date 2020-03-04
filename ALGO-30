@@ -1,0 +1,24 @@
+#include<iostream>
+using namespace std;
+
+int main(){
+	int T,M;
+	int dp[1010][110]={0};//表示i时间能 m种草药 最大价值 
+	cin>>T>>M;
+	for(int i=1;i<=M;i++){
+		int a,b;
+		cin>>a>>b;
+		for(int j=1;j<=T;j++){
+			if(j>=a){
+				dp[j][i]=max(dp[j][i-1],dp[j-a][i-1]+b);
+			}else{
+				dp[j][i]=dp[j][i-1];
+			}
+		}
+	}	
+	cout<<dp[T][M];
+	return 0;
+
+}
+
+
