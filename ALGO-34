@@ -1,0 +1,32 @@
+#include<iostream>
+using namespace std;
+#include<algorithm>
+#include<math.h>
+int p[30010];
+int cmp(int a,int b){
+	return a>b;
+}
+int main(){
+	int w,n;
+	cin>>w>>n;
+	for(int i=1;i<=n;i++){
+		cin>>p[i];
+	}
+	sort(p+1,p+n+1,cmp);//将纪念品由大到小排 
+//	for(int i=1;i<=n;i++){
+//		cout<<p[i]<<" ";
+//	}
+	int j=n,cnt=0;//就是从后往前走 
+	for(int i=1;i<=n;i++){//i从前往后走 
+		if(i<=j){//如果i小于j 
+			if(p[i]+p[j]<=w){//并且两个相加小于纪念品价格之和上限 
+				cnt++;//组+1； 
+				j--;//j往前走一步 
+			}else{//i一个纪念品 一组 
+				cnt++;
+			}	
+		}
+	}
+	cout<<cnt;
+	return 0;
+}
