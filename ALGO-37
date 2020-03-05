@@ -1,0 +1,33 @@
+#include <iostream>
+using namespace std;
+#include<algorithm>
+#include<math.h>
+int gcd(int a,int b){
+	return a%b==0?b:gcd(b,a%b);
+}
+int main()
+{
+ 	int n;
+	cin>>n;
+	for(int i=0;i<n;i++){
+		int a0,a1,b0,b1;
+		cin>>a0>>a1>>b0>>b1;
+		int p=a0/a1,q=b1/b0,cnt=0;
+		for(int j=1;j<=sqrt(b1);j++){//判断gcd(x/a1,p)==1&&gcd(q,b1/x)==1；
+		//与x的公共因子都是1 
+			if(b1%j==0){
+				if(j%a1==0&&gcd(j/a1,p)==1&&gcd(q,b1/j)==1){
+					cnt++;
+				}
+				int y=b1/j;
+				if(j==y)continue;
+				if(y%a1==0&&gcd(y/a1,p)==1&&gcd(q,b1/y)==1){
+					cnt++;
+				}
+			}
+		}
+		cout<<cnt<<endl;
+	}  
+
+    return 0;
+}
