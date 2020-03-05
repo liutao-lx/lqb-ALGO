@@ -1,0 +1,20 @@
+#include<iostream>
+using namespace std;
+#include<algorithm>
+#include<math.h>
+int main(){
+	int dp[35][35]={0};//dp[i][j]作为传了i次之后球在j手中的次数 
+	int n,m;
+	cin>>n>>m;
+	dp[1][n]=dp[1][2]=1;
+	for(int i=2;i<=m;i++){
+		for(int j=1;j<=n;j++){
+		int a,b;
+     	if(j==1)a=dp[i-1][n];else a=dp[i-1][j-1];//处于边界情况的特殊考虑
+        if(j==n)b=dp[i-1][1];else b=dp[i-1][j+1];
+        dp[i][j]=a+b;
+		}
+	} 
+	cout<<dp[m][1];
+	return 0;
+}
