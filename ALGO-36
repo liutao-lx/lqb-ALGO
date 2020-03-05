@@ -1,0 +1,29 @@
+#include <iostream>
+using namespace std;
+#include<algorithm>
+int dp[55][55][55][55];
+int a[55][55];
+int main()
+{
+ 
+    int n,m;
+    cin>>n>>m;
+    for(int i=1;i<=n;i++)
+        for(int j=1;j<=m;j++)
+            cin>>a[i][j];
+    for(int i=1;i<=n;i++){//2优化方法：因为i+j=x+y；所以i+j-x=y；y是可以通过计算求到所以复杂度可以掉到n3 
+        for(int j=1;j<=m;j++){
+            for(int x=1;x<=n;x++){
+                for(int y=1;y<=m;y++){
+                    int sum1 = max(dp[i-1][j][x-1][y],dp[i-1][j][x][y-1]);
+                    int sum2 = max(dp[i][j-1][x-1][y],dp[i][j-1][x][y-1]);
+                    dp[i][j][x][y] = max(sum1,sum2) + a[i][j];
+                    if(i != x && j != y)
+                        dp[i][j][x][y] += a[x][y];
+                }
+            }
+        }
+    }
+    cout<<dp[n][m][n][m]<<endl;
+    return 0;
+}
