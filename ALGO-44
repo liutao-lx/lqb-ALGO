@@ -1,0 +1,59 @@
+#include <iostream>
+using namespace std;
+#include<algorithm>
+#define MAX 1505
+int map[MAX][MAX],left_left[MAX][MAX],left_right[MAX][MAX],right_left[MAX][MAX],right_right[MAX][MAX];
+int a[MAX][MAX],aa[MAX][MAX];
+int main()
+{
+	int m,n,k,ans=0;
+	cin>>n>>m>>k;
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=m;j++){
+			cin>>map[i][j];
+			//可预处理，用前缀和将以左上角和（i,j）为对角的矩形内的值的和保存在（i,j），
+			//随后将k*k的区域值的最大值保存在（i,j），再分别求出以右下，右上，左上顶点为最大值即可。
+			//而对于case1和case2，可以规定中间的区域的宽度就是k,此时最优的情况依然包含在内。
+			a[i][j]=a[i-1][j]+a[i][j-1]-a[i-1][j-1]+map[i][j];
+			aa[i][j]=a[i][j]-a[i][j-k]-a[i-k][j]+a[i-k][j-k];
+			if(i>=k&&j>=k){//这里处理左上角情况 
+				left_left[i][j]=max(aa[i][j],max(left_left[i][j-1],left_left[i-1][j]));
+			}
+		}
+	}
+	for(int i=k;i<=n;i++){//右下 
+		for(int j=m-k+1;j>=1;j--){
+			left_right[i][j]=max(aa[i][j+k-1],max(left_right[i][j+1],left_right[i-1][j]));
+		}
+	}
+	for(int i=n-k+1;i>=1;i--){//右上
+		for(int j=k;j<=m;j++){
+			right_left[i][j]=max(aa[i+k-1][j],max(right_left[i][j-1],right_left[i+1][j]));
+		}
+	}
+	for(int i=n-k+1;i>=1;i--){//左上
+		for(int j=m-k+1;j>=1;j--){
+			right_right[i][j]=max(aa[i+k-1][j+k-1],max(right_right[i][j+1],right_right[i+1][j]));	
+		}
+	}
+	for(int i=k;i+k<=n;++i){
+		for(int j=k;j+k<=m;++j)
+		{
+			int aa=max(left_left[n][j]+left_right[i][j+1]+right_right[i+1][j+1],left_left[i][j]+left_right[n][j+1]+right_left[i+1][j]);
+			int bb=max(left_left[i][j]+left_right[i][j+1]+right_left[i+1][m],left_left[i][m]+right_left[i+1][j]+right_right[i+1][j+1]);
+			ans=max(ans,max(aa,bb));
+		}
+	}
+	for(int i=2*k;i+k<=n;i++){
+		for(int j=k;j<=m;j++){
+			ans=max(ans,left_left[i-k][m]+right_left[i+1][m]+aa[i][j]);
+		}
+	}
+	for(int j=2*k;j+k<=m;j++){
+		for(int i=k;i<=n;i++){
+			ans=max(ans,left_left[n][j-k]+left_right[n][j+1]+aa[i][j]);
+		}
+	}
+	cout<<ans<<endl;
+    return 0;
+}
