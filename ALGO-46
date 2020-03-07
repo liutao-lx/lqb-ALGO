@@ -1,0 +1,20 @@
+#include<iostream>
+using namespace std;
+#include<algorithm>
+int cnt=0;
+void hanoi(int n,int m,char a,char b,char c){
+	if(n<=m){
+		cnt++;
+	}else{
+		hanoi(n-m,m,a,c,b);//借助c将a的移到b
+		cnt++;
+		hanoi(n-m,m,b,a,c);//借助a将b移到c
+	}
+}
+int main(){
+	int n,m;
+	cin>>n>>m;
+	hanoi(n,m,'a','b','c');
+	cout<<cnt;
+	return 0;
+}
