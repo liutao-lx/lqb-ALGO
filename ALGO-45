@@ -1,0 +1,29 @@
+#include <iostream>
+using namespace std;
+#include<algorithm>
+#include<vector>
+struct node{
+	int n;
+	double d;
+};
+int main()
+{
+	double ans=0,x;
+	int i=1;
+	vector<double> v;
+	v.push_back(0);
+	while(ans<=5.20){
+		ans+=1.0/(1+i);
+		v.push_back(ans);
+		i++;
+	}
+	while(cin>>x&&x!=0.0){
+		for(int i=1;i<=v.size();i++){//这里用二分更快
+			if(v[i]>=x){
+				cout<<i<<" "<<"card(s)"<<endl;
+				break;
+			}
+		}
+	}
+    return 0;
+}
