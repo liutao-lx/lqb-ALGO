@@ -1,0 +1,29 @@
+#include <iostream>
+#include <algorithm>
+#include<string.h>
+using namespace std;
+int main() {
+	int n,m,dp[26000]={0},yp[110];
+	//dp 表示 权重为i时插入了几张邮票 
+	memset(dp,0,sizeof(dp));
+	cin>>n>>m;
+	int max=0;
+	for(int i=0;i<m;i++){
+		cin>>yp[i];
+	}
+	while(true){
+		++max;
+		for(int i=0;i<m;i++){
+			if(max>=yp[i]){
+				if(dp[max]==0||dp[max]>dp[max-yp[i]]+1){//多种情况max相等那么去最小的数量 
+					dp[max]=dp[max-yp[i]]+1;
+				}
+			}
+		}
+		if(dp[max]==0||dp[max]>n){//dp[max]>n表示要满足权重max时，需要超过n张邮票
+			cout<<max-1;
+			break;
+		}
+	}
+	return 0;
+}
