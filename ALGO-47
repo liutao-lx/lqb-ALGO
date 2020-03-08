@@ -1,0 +1,54 @@
+#include <iostream>  
+#include <algorithm>  
+using namespace std;  
+#include<math.h>
+struct node{
+	double a;//速度向量 
+	double b;
+	double c;
+	double x;//初始位置 
+	double y;
+	double z;
+	double x1;//飞行后位置 
+	double y1;
+	double z1;
+	node(){
+		x1=0;
+		y1=0;
+		z1=0;
+	}
+};
+node mf[3];
+void distance(int t){
+	mf[1].x1+=mf[1].a*t;
+	mf[1].y1+=mf[1].b*t;
+	mf[1].z1+=mf[1].c*t;
+	
+	mf[2].x1+=mf[2].a*t;
+	mf[2].y1+=mf[2].b*t;
+	mf[2].z1+=mf[2].c*t;
+} 
+void distance1(){
+	mf[1].x1+=mf[1].x;
+	mf[1].y1+=mf[1].y;
+	mf[1].z1+=mf[1].z;
+	
+	mf[2].x1+=mf[2].x;
+	mf[2].y1+=mf[2].y;
+	mf[2].z1+=mf[2].z;
+} 
+int main(){  
+    int n;
+    cin>>n;
+    while(n--){ 
+    	int ti;
+    	cin>>mf[1].a>>mf[1].b>>mf[1].c>>mf[2].a>>mf[2].b>>mf[2].c>>ti;
+    	distance(ti); 
+	}
+	cin>>mf[1].x>>mf[1].y>>mf[1].z>>mf[2].x>>mf[2].y>>mf[2].z;
+	distance1();
+	printf("%.4lf",sqrt( (mf[1].x1-mf[2].x1)*(mf[1].x1-mf[2].x1)+
+	(mf[1].y1-mf[2].y1)*(mf[1].y1-mf[2].y1)+
+	(mf[1].z1-mf[2].z1)*(mf[1].z1-mf[2].z1) ) );
+    return 0;  
+} 
