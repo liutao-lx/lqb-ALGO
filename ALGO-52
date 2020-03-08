@@ -1,0 +1,35 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+const int N = 10+5;
+int nexts[N][N], t[N];
+int n, k, cnt = 0;
+ int cmp(int a,int b){
+ 	return a<b;
+ }
+int main() {	
+	cin>> n>> k;	
+	for(int i = 0; i < n; i++){
+		t[i] = i;
+		for(int j = 0; j < n; j++)
+			cin>> nexts[i][j];
+	}
+	do{
+		bool ok = true;
+		for(int i = 1; i < n; i++){
+			if(nexts[t[i-1]][t[i]] == 0){
+				ok = false; 
+				break;
+			}
+		}
+		if(ok==1) {
+			cnt++;
+		}
+		if(cnt == k){
+			break;	
+		}
+	}while(next_permutation(t, t+n,cmp));
+	for(int i = 0; i < n; i++)
+		cout<< t[i]<< " ";			 
+	return 0;
+}
