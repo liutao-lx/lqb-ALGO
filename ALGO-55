@@ -1,0 +1,35 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+int a[110][110],b[110][110];
+int n,m;
+int add(){
+	for(int i=0;i<n;i++){
+		for(int j=0;j<m;j++){
+			a[i][j]+=b[i][j];
+		}
+	} 
+	for(int i=0;i<n;i++){
+		for(int j=0;j<m;j++){
+			if(j!=m-1)
+			cout<<a[i][j]<<" ";
+			else	cout<<a[i][j];
+		}
+		cout<<endl;
+	} 
+}
+int main() {
+	cin>>n>>m;
+	for(int i=0;i<n;i++){
+		for(int j=0;j<m;j++){
+			cin>>a[i][j]; 
+		}
+	} 
+	for(int i=0;i<n;i++){
+		for(int j=0;j<m;j++){
+			cin>>b[i][j]; 
+		}
+	} 
+	add();
+	return 0;
+}
