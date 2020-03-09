@@ -1,0 +1,41 @@
+#include <iostream>
+using namespace std;
+#include<algorithm>
+#include<math.h>
+#include<string.h>
+int main()
+{
+    int team[70][70],n,opnt[70];//team存储两个队伍是否已经打过，opnt存储有没有碰到该对手 
+    int saveT[35][2];//存储打的两个队 
+    cin>>n;
+    memset(team,0,sizeof(team));
+    int num=pow(2,n);
+    for(int i=1;i<=num-1;i++){
+    	memset(saveT,0,sizeof(saveT));
+    	memset(opnt,0,sizeof(opnt));
+    	int t=0;
+    	for(int j=1;j<=num;j++){
+    		if(opnt[j]==0){//如果这支队伍没有对手，配对 
+    			opnt[j]=1;
+				for(int k=1;k<=num;k++){
+	    			if(j==k||opnt[k]==1){//如果队伍k已经参与其他比赛，跳过，j不能等于k：自己不能打自己 
+	    				continue;
+					}
+					if(team[j][k]==0&&opnt[k]==0){
+						team[j][k]=1;
+						opnt[k]=1;
+						saveT[t][0]=j;
+						saveT[t++][1]=k;
+						break;
+					}
+				}	
+			}
+		}
+		printf("<%d>",i);
+		for(int i=0;i<t;i++){
+			printf("%d-%d ",saveT[i][0],saveT[i][1]);
+		}
+		cout<<endl;
+	}
+    return 0;
+}
