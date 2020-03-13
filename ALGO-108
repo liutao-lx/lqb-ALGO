@@ -1,0 +1,59 @@
+#include<iostream>
+using namespace std;
+#define MAX_NUM 100000
+
+int n;
+int a[11];            //保存物品的体积 
+int dp[MAX_NUM];    //保存物品能组成的所有体积
+ 
+int gcd(int a,int b)    //求两个数的最大公约数 
+{
+    if (a % b == 0)
+        return b;
+    else
+        return gcd(b, a % b);
+}
+
+int gcdAll()            //求所有数的最大公约数 
+{
+    int temp = a[0];
+    for (int i = 1; i < n; i++)
+    {
+        temp = gcd(temp, a[i]);
+    }
+    return temp;
+}
+
+int main()
+{
+    cin >> n;
+    for (int i = 0; i < n; i++)
+        cin >> a[i];
+
+    if (gcdAll() == 1)    //如果所有数的最大公约数为1,则有解，否则为无限解 
+    {
+        dp[0] = 1;
+        for (int i = 0; i < n; i++)
+        {
+            for (int j =a[i]; j <= MAX_NUM; j++)
+            {
+                if (dp[j - a[i]] == 1)    //如果上一次的是能够 被物品组合的 1表示能够组合 
+                                                  //接下来，j为 goods[i]中物品体积值组合的结果 
+                    dp[j] = 1;
+            }
+        }
+        
+        for (int i = MAX_NUM; i >= 0; i--)        //逆序遍历所有的体积结果，将第一个不能组合的数输出后结束 
+        {
+            if (!dp[i])
+            {
+                cout<<i;
+                return 0;
+            }
+        }
+    }
+
+    cout<<"0";    //无限解
+
+    return 0;
+}
